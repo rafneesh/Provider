@@ -28,18 +28,6 @@ public class CustomerServiceImpl implements CustomerService {
 
 		System.out.println("Get Query for the Customer:" + customerId);
 
-		/*Activity a1 = new Activity();
-		a1.setAction("PRODUCT_VIEW");
-		a1.setCustomerId("1C13E32B66374084");
-		a1.setTime(new Date());
-
-		Activity a2 = new Activity();
-		a2.setAction("PRODUCT_VIEW");
-		a2.setCustomerId("1C13E32B66374084");
-		a2.setTime(new Date());
-		
-		*/
-
 		List<Activity> activities = new ArrayList<Activity>();
 
 		activities = customerDao.fetchAllActivity(customerId);
