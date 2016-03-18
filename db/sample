@@ -1,0 +1,151 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 9.3.11
+-- Dumped by pg_dump version 9.3.11
+-- Started on 2016-03-18 17:58:24 IST
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+
+--
+-- TOC entry 1980 (class 1262 OID 16390)
+-- Name: sample; Type: DATABASE; Schema: -; Owner: postgres
+--
+
+CREATE DATABASE sample WITH TEMPLATE = template0 ENCODING = 'UTF8' LC_COLLATE = 'en_IN' LC_CTYPE = 'en_IN';
+
+
+ALTER DATABASE sample OWNER TO postgres;
+
+\connect sample
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+
+--
+-- TOC entry 1 (class 3079 OID 11787)
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- TOC entry 1983 (class 0 OID 0)
+-- Dependencies: 1
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+SET search_path = public, pg_catalog;
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- TOC entry 172 (class 1259 OID 24579)
+-- Name: activity; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE activity (
+    id integer,
+    date timestamp without time zone,
+    action character varying,
+    product_id character varying,
+    customer_id character varying
+);
+
+
+ALTER TABLE public.activity OWNER TO postgres;
+
+--
+-- TOC entry 171 (class 1259 OID 24576)
+-- Name: customer; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE customer (
+    id character varying NOT NULL,
+    name character varying(25),
+    age integer,
+    email character varying
+);
+
+
+ALTER TABLE public.customer OWNER TO postgres;
+
+--
+-- TOC entry 1975 (class 0 OID 24579)
+-- Dependencies: 172
+-- Data for Name: activity; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO activity (id, date, action, product_id, customer_id) VALUES (1, '2016-03-17 15:32:25.420201', 'PRODUCT_VIEW', '1C13E32B66374084', 'fd98303e-c9bf-4eae-a095-f6cd476befea');
+INSERT INTO activity (id, date, action, product_id, customer_id) VALUES (2, '2016-03-17 15:32:41.453034', 'PRODUCT_VIEW', '2B156E32C66374056', 'fd98303e-c9bf-4eae-a095-f6cd476befea');
+
+
+--
+-- TOC entry 1974 (class 0 OID 24576)
+-- Dependencies: 171
+-- Data for Name: customer; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO customer (id, name, age, email) VALUES ('fd98303e-c9bf-4eae-a095-f6cd476befea', 'Peter', 23, 'peter@abc.com');
+
+
+--
+-- TOC entry 1864 (class 2606 OID 24597)
+-- Name: id; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY customer
+    ADD CONSTRAINT id PRIMARY KEY (id);
+
+
+--
+-- TOC entry 1865 (class 1259 OID 24595)
+-- Name: fki_customer_id; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX fki_customer_id ON activity USING btree (customer_id);
+
+
+--
+-- TOC entry 1866 (class 2606 OID 24598)
+-- Name: customer_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY activity
+    ADD CONSTRAINT customer_id FOREIGN KEY (customer_id) REFERENCES customer(id);
+
+
+--
+-- TOC entry 1982 (class 0 OID 0)
+-- Dependencies: 6
+-- Name: public; Type: ACL; Schema: -; Owner: postgres
+--
+
+REVOKE ALL ON SCHEMA public FROM PUBLIC;
+REVOKE ALL ON SCHEMA public FROM postgres;
+GRANT ALL ON SCHEMA public TO postgres;
+GRANT ALL ON SCHEMA public TO PUBLIC;
+
+
+-- Completed on 2016-03-18 17:58:25 IST
+
+--
+-- PostgreSQL database dump complete
+--
+
