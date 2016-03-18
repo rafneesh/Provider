@@ -2,9 +2,11 @@ package com.demo.dao.impl;
 
 import java.util.List;
 
+import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Restrictions;
 
 import com.demo.dao.CustomerDao;
 import com.demo.hibernate.HibernateUtil;
@@ -31,15 +33,14 @@ public class CustomerDaoImpl implements CustomerDao
 	        // creating session object
 	        Session session = HibernateUtil.getSessionFactory().openSession();
 
-	        // creating transaction object
-	        Transaction t = session.beginTransaction();
-
-	        Query query = session.createQuery("from Activity");
-	        List list = query.list();
-	        System.out.println(list);
-	        t.commit();
+	        Criteria activityCriteria = session.createCriteria(Activity.class);
+	        
+	        List<Activity> activities = (List)activityCriteria.createCriteria("customer")
+	        	    .add(Restrictions.eq("customerId",customerId))
+	        	    .list();
+	        //System.out.println(list);
 	        session.close();
-		return list;
+		return activities;
 	}
 
 	@Override

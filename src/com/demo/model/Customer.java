@@ -1,8 +1,13 @@
 package com.demo.model;
 
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 
@@ -17,7 +22,7 @@ import javax.persistence.Table;
 public class Customer
 {
 	@Id
-    @Column(name="customerId")
+    @Column(name="id")
 	private String customerId;
 	
 	@Column(name="name")
@@ -28,8 +33,7 @@ public class Customer
 	
 	@Column(name="age")
 	private Integer age;
-
-
+	
 	public String getCustomerId() {
 		return customerId;
 	}
@@ -65,6 +69,5 @@ public class Customer
 	public void setAge(Integer age) {
 		this.age = age;
 	}
-	
 
 }
