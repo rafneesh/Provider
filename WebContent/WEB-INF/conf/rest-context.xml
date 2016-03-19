@@ -1,40 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-     	xmlns:cxf="http://cxf.apache.org/core"
-		xmlns:jaxws="http://cxf.apache.org/jaxws"
-		xmlns:jaxrs="http://cxf.apache.org/jaxrs"
-		xsi:schemaLocation="
-			http://cxf.apache.org/core http://cxf.apache.org/schemas/core.xsd
-			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-			http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd
-			http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
-
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:cxf="http://cxf.apache.org/core"
+	xmlns:jaxrs="http://cxf.apache.org/jaxrs"
+	xmlns:jaxws="http://cxf.apache.org/jaxws"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://cxf.apache.org/core http://cxf.apache.org/schemas/core.xsd http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans.xsd http://cxf.apache.org/jaxrs
+		http://cxf.apache.org/schemas/jaxrs.xsd http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+	
 	<import resource="classpath:META-INF/cxf/cxf.xml"/>
 	<import resource="classpath:META-INF/cxf/cxf-servlet.xml"/>
-
-    <cxf:bus>
-        <cxf:features>
-            <cxf:logging/>
-        </cxf:features>
-    </cxf:bus>
-
-	<bean id="customerDao" class="com.demo.dao.impl.CustomerDaoImpl">
-	</bean>
-
-	<bean id="customerService" class="com.demo.services.impl.CustomerServiceImpl">
-		<property name="customerDao" ref="customerDao"/>
-	</bean>
-
-	<bean id="jsonProvider" class="org.codehaus.jackson.jaxrs.JacksonJsonProvider"/>
 	
-  	<jaxrs:server id="ProviderREST" address="/smy-service">
-  		<jaxrs:serviceBeans>
-  			<ref bean="customerService"/>
-  		</jaxrs:serviceBeans>
-  		<jaxrs:providers>
+	<cxf:bus>
+		<cxf:features>
+			<cxf:logging/>
+		</cxf:features>
+	</cxf:bus>
+	
+	<context:annotation-config/>
+	<context:component-scan base-package="com.demo" />
+	
+	<bean id="jacksonMapper" class="org.codehaus.jackson.map.ObjectMapper">
+		<property name="serializationConfig.dateFormat">
+			<bean class="java.text.SimpleDateFormat">
+				<constructor-arg value="yyyy-MM-dd HH:mm" />
+			</bean>
+		</property>
+	</bean>
+	
+	<bean id="jsonProvider" class="org.codehaus.jackson.jaxrs.JacksonJsonProvider">
+		<property name="mapper" ref="jacksonMapper" />
+	</bean>
+	
+	<jaxrs:server id="ProviderREST" address="/smy-service">
+		<jaxrs:serviceBeans>
+			<ref bean="customerService"/>
+		</jaxrs:serviceBeans>
+		<jaxrs:providers>
 			<ref bean='jsonProvider' />
 		</jaxrs:providers>
-  	</jaxrs:server>
-
+		
+	</jaxrs:server>
+	
 </beans>

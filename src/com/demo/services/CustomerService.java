@@ -7,6 +7,9 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
+
 import com.demo.model.Activity;
 
 /**
