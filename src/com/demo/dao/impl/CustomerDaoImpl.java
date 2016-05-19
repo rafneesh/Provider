@@ -6,6 +6,7 @@ import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
@@ -38,7 +39,7 @@ public class CustomerDaoImpl implements CustomerDao
 	        Criteria activityCriteria = session.createCriteria(Activity.class);
 	        
 	        @SuppressWarnings("unchecked")
-			List<Activity> activities = (List<Activity>)activityCriteria.add(Restrictions.eq("customerId",customerId))
+			List<Activity> activities = (List<Activity>)activityCriteria.add(Restrictions.eq("customerId",customerId)).addOrder(Order.desc("date"))
 	        	    .list();
 	        //System.out.println(list);
 	        session.close();
